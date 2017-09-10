@@ -1,0 +1,27 @@
+parameters:
+  app.entity.user_group.class: AppBundle\Entity\UserGroup
+  app.entity.user.class: AppBundle\Entity\User
+
+  app.repository.user_group.class: AppBundle\Repository\UserGroupRepository
+  app.repository.user.class: AppBundle\Repository\UserRepository
+
+services:
+  app.repository.abstract:
+    abstract: true
+    factory: ["@doctrine.orm.entity_manager", getRepository]
+    
+  app.repository.user_group:
+    parent: app.repository.abstract
+    class: %app.repository.user_group.class%
+    arguments: [ %app.entity.user_group.class% ]
+
+  app.repository.user:
+    parent: app.repository.abstract
+    class: %app.repository.user.class%
+    arguments: [ %app.entity.user.class% ]
+
+
+
+
+
+

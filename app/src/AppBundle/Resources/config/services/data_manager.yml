@@ -1,0 +1,24 @@
+parameters:
+  app.data_manager.user_group.class: AppBundle\DataManager\UserGroupManager
+  app.data_manager.user.class: AppBundle\DataManager\UserManager
+
+services:
+  app.data_manager.abstract:
+    abstract: true
+    calls:
+      - [ setEntityManager, [ '@doctrine.orm.entity_manager'] ]
+      - [ setLogger, [ '@logger'] ]
+
+  app.data_manager.user_group:
+    parent: app.data_manager.abstract
+    class: %app.data_manager.user_group.class%
+    calls:
+      - [ setUserGroupRepository, [ '@app.repository.user_group' ] ]
+
+  app.data_manager.user:
+    parent: app.data_manager.abstract
+    class: %app.data_manager.user.class%
+    calls:
+      - [ setUserRepository, [ '@app.repository.user' ] ]
+
+
