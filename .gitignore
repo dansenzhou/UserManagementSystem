@@ -22,3 +22,6 @@
 
 #IDE
 /.idea
+
+# diagram
+*.graffle
