@@ -1,0 +1,36 @@
+version: '2'
+services:
+    db:
+        cpu_shares: 512
+        image: mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 123
+            MYSQL_DATABASE: app
+            MYSQL_USER: app
+            MYSQL_PASSWORD: 123
+    php:
+        build: ./php7-fpm
+        cpu_shares: 1024
+        cpuset: 0-1
+        restart: always
+        expose:
+            - "9000"
+        volumes:
+            - ./app:/var/www/app
+        links:
+            - db
+    nginx:
+        build: ./nginx
+        cpu_shares: 512
+        restart: always
+        ports:
+            - "80:80"
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx:/var/log/nginx
